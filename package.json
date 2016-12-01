@@ -1,0 +1,17 @@
+{
+  "name": "spoutable-cookies",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": ""
+  },
+  "author": "Ryan P Hansen",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.7.7",
+    "openurl": "^1.1.1",
+    "uuid": "^3.0.1"
+  }
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dynamo DB Cookies</title>
+    </head>
+    <body>
+        <button id="clearEntries" style="visibility:hidden;"></button>
+        <input id="cookieInput" type="text" placeholder="Bidtellect Cookie">
+        <button id="saveCookie" onclick="addPartnerCookie('bidtelect')">Save</button>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.4.1/fingerprint2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.1/fetch.min.js"></script>
+        <script>
+            fetch(buildUrl('getOne'), {credentials: 'same-origin'})
+            .then(function (data) { return data.json() })
+            .then(function (data) {
+                console.log(data)
+                findAll()
+            })
+            .catch(function (err) {
+                console.log(err)
+            })
+
+            function findAll () {
+                fetch(buildUrl('getAll'), {credentials: 'same-origin'})
+                .then(function (data) { return data.json() })
+                .then(function (data) {
+                    console.log(data)
+                    var btn = document.getElementById("clearEntries")
+                    btn.innerText = 'Delete all ' + data.Count + ' items';
+                    btn.style = '';
+                    btn.onclick = delAll;
+                })
+                .catch(function (err) {
+                    console.log(err)
+                })
+            }
+            function delAll () {
+                fetch(buildUrl('deleteAll'), {credentials: 'same-origin'})
+                .then(findAll)
+            }
+            function addPartnerCookie (partner) {
+                fetch(buildUrl('setOne'), {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        partner: partner,
+                        value: document.getElementById('cookieInput').value || ""
+                    }),
+                    credentials: 'same-origin'
+                })
+                .then(function (data) { return data.json() })
+                .then(function (data) {console.log(data)})
+                .then(findAll)
+            }
+            function buildUrl (endpoint) {
+                return 'http://localhost:8080/' + endpoint;
+            }
+        </script>
+    </body>
+</html>
